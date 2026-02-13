@@ -1,14 +1,13 @@
 import { createBoard, generateBoardStr } from "./src/board.js";
+import { getCoordinates } from "./src/game.js";
 const main = () => {
   const board = createBoard();
   while (true) {
     const boardStr = generateBoardStr(board);
     console.log(boardStr);
-    const input = prompt("Enter The cell number in format (row-column):");
-    const [row, column] = input.split("-");
-    const computedRow = Number(row) - 1;
-    const computedColumn = Number(column) - 1;
-    const cellNumber = (computedRow * 8) + computedColumn;
+    const { row, column } = getCoordinates();
+    console.log(row, column);
+    const cellNumber = (row * 8) + column;
     board[cellNumber] = "⚫️";
   }
 };

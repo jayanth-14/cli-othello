@@ -32,8 +32,8 @@ const parseCoordinates = (userInput) => {
 
 const isValidInput = (userInput) => /\d-\d/.test(userInput);
 
-const getCoordinates = () => {
-  const userInput = prompt("Enter The cell number in format (row-column):");
+const getCoordinates = (disc) => {
+  const userInput = prompt(`It's ${disc} turn. Format (row-column):`);
   if (!isValidInput(userInput)) {
     throw new Error(
       `Invalid Format, follow the specified format: ${userInput}`,
@@ -56,13 +56,16 @@ const displayBoard = (board) => {
 };
 
 export const startGame = (board) => {
+  const discs = ["⚪️", "⚫️"];
+  let i = 0;
   while (true) {
     try {
       displayBoard(board);
-      const coordinates = getCoordinates(board);
+      const currentDisc = discs[i++ % 2];
+      const coordinates = getCoordinates(currentDisc);
       validateCoordinates(board, coordinates);
       const cellNumber = computeCellIndex(coordinates);
-      updateBoard(board, cellNumber);
+      updateBoard(board, cellNumber, currentDisc);
     } catch (error) {
       console.log(red(error.message));
     }

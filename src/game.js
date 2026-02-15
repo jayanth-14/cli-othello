@@ -2,6 +2,20 @@ const isValidCoordinates = ({ row, column }) =>
   column >= 0 && column < 8 && row >= 0 &&
   row < 8;
 
+export const validateCoordinates = (board, coordinates) => {
+  const [row, column] = [coordinates.row + 1, coordinates.column + 1];
+
+  if (!isValidCoordinates(coordinates)) {
+    throw new Error(`Invalid positions : ${row} - ${column}`);
+  }
+
+  const cellIndex = computeCellIndex(coordinates);
+
+  if (board[cellIndex] !== "⬜") {
+    throw new Error(`Selected cell is already occupied : ${row} - ${column}`);
+  }
+};
+
 const computeCoordinate = (coordinate) => Number(coordinate) - 1;
 
 const parseCoordinates = (userInput) => {
@@ -24,10 +38,6 @@ export const getCoordinates = () => {
   }
 
   const coordinates = parseCoordinates(userInput);
-  if (!isValidCoordinates(coordinates)) {
-    throw new Error(`Invalid positions : ${userInput}`);
-  }
-
   return coordinates;
 };
 

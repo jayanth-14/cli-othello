@@ -46,7 +46,8 @@ const getCoordinates = (disc) => {
 
 const computeCellIndex = ({ row, column }) => (row * 8) + column;
 
-const updateBoard = (board, cellNumber, disc = "⚫️") => {
+const updateBoard = (board, coordinates, disc = "⚫️") => {
+  const cellNumber = computeCellIndex(coordinates);
   board[cellNumber] = disc;
 };
 
@@ -64,8 +65,7 @@ export const startGame = (board) => {
       const currentDisc = discs[i++ % 2];
       const coordinates = getCoordinates(currentDisc);
       validateCoordinates(board, coordinates);
-      const cellNumber = computeCellIndex(coordinates);
-      updateBoard(board, cellNumber, currentDisc);
+      updateBoard(board, coordinates, currentDisc);
     } catch (error) {
       console.log(red(error.message));
     }

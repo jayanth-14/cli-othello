@@ -1,14 +1,18 @@
 import { createBoard, generateBoardStr } from "./src/board.js";
-import { getCoordinates } from "./src/game.js";
+import { computeCellIndex, getCoordinates, updateBoard } from "./src/game.js";
+import { red } from "@std/fmt/colors";
 const main = () => {
   const board = createBoard();
   while (true) {
-    const boardStr = generateBoardStr(board);
-    console.log(boardStr);
-    const { row, column } = getCoordinates();
-    console.log(row, column);
-    const cellNumber = (row * 8) + column;
-    board[cellNumber] = "⚫️";
+    try {
+      const boardStr = generateBoardStr(board);
+      console.log(boardStr);
+      const coordinates = getCoordinates();
+      const cellNumber = computeCellIndex(coordinates);
+      updateBoard(board, cellNumber);
+    } catch (error) {
+      console.log(red(error.message));
+    }
   }
 };
 

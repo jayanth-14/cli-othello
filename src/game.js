@@ -1,8 +1,11 @@
+import { generateBoardStr } from "./board.js";
+import { red } from "@std/fmt/colors";
+
 const isValidCoordinates = ({ row, column }) =>
   column >= 0 && column < 8 && row >= 0 &&
   row < 8;
 
-export const validateCoordinates = (board, coordinates) => {
+const validateCoordinates = (board, coordinates) => {
   const [row, column] = [coordinates.row + 1, coordinates.column + 1];
 
   if (!isValidCoordinates(coordinates)) {
@@ -29,7 +32,7 @@ const parseCoordinates = (userInput) => {
 
 const isValidInput = (userInput) => /\d-\d/.test(userInput);
 
-export const getCoordinates = () => {
+const getCoordinates = () => {
   const userInput = prompt("Enter The cell number in format (row-column):");
   if (!isValidInput(userInput)) {
     throw new Error(
@@ -41,8 +44,27 @@ export const getCoordinates = () => {
   return coordinates;
 };
 
-export const computeCellIndex = ({ row, column }) => (row * 8) + column;
+const computeCellIndex = ({ row, column }) => (row * 8) + column;
 
-export const updateBoard = (board, cellNumber, disc = "⚫️") => {
+const updateBoard = (board, cellNumber, disc = "⚫️") => {
   board[cellNumber] = disc;
+};
+
+const displayBoard = (board) => {
+  const boardStr = generateBoardStr(board);
+  console.log(boardStr);
+};
+
+export const startGame = (board) => {
+  while (true) {
+    try {
+      displayBoard(board);
+      const coordinates = getCoordinates(board);
+      validateCoordinates(board, coordinates);
+      const cellNumber = computeCellIndex(coordinates);
+      updateBoard(board, cellNumber);
+    } catch (error) {
+      console.log(red(error.message));
+    }
+  }
 };

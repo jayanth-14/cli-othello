@@ -1,6 +1,6 @@
 import { generateBoardStr } from "./board.js";
 import { red } from "@std/fmt/colors";
-import { scan } from "./directions.js";
+import { getCellsToFlip, scan } from "./directions.js";
 
 const isValidCoordinates = ({ row, column }) =>
   column >= 0 && column < 8 && row >= 0 &&
@@ -45,7 +45,7 @@ const getCoordinates = (disc) => {
   return coordinates;
 };
 
-const computeCellIndex = ({ row, column }) => (row * 8) + column;
+export const computeCellIndex = ({ row, column }) => (row * 8) + column;
 
 const updateBoard = (board, cellNumber, disc) => {
   console.log(disc);
@@ -72,15 +72,13 @@ export const startGame = (board) => {
       const [currentDisc, opponentDisc] = discGenerator.next().value;
       const coordinates = getCoordinates(currentDisc);
       validateCoordinates(board, coordinates);
-      const cellsToFlip = scan(
+      const cellNumber = computeCellIndex(coordinates);
+      const cellsToFlip = getCellsToFlip(
         board,
-        computeCellIndex(coordinates),
-        -8,
+        cellNumber,
         currentDisc,
         opponentDisc,
-        (cur) => cur >= 0,
       );
-      const cellNumber = computeCellIndex(coordinates);
       updateBoard(board, cellNumber, currentDisc);
       console.log("cellsToFlip:", cellsToFlip);
       cellsToFlip.forEach((cell) => updateBoard(board, cell, currentDisc));

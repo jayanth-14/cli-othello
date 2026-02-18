@@ -1,5 +1,6 @@
 import { generateBoardStr } from "./board.js";
 import { red } from "@std/fmt/colors";
+import { scan } from "./directions.js";
 
 const isValidCoordinates = ({ row, column }) =>
   column >= 0 && column < 8 && row >= 0 &&
@@ -46,8 +47,8 @@ const getCoordinates = (disc) => {
 
 const computeCellIndex = ({ row, column }) => (row * 8) + column;
 
-const updateBoard = (board, coordinates, disc = "⚫️") => {
-  const cellNumber = computeCellIndex(coordinates);
+const updateBoard = (board, cellNumber, disc) => {
+  console.log(disc);
   board[cellNumber] = disc;
 };
 
@@ -56,16 +57,33 @@ const displayBoard = (board) => {
   console.log(boardStr);
 };
 
-export const startGame = (board) => {
+const getDiscs = function* () {
   const discs = ["⚪️", "⚫️"];
-  let i = 0;
+  while (true) {
+    yield discs.reverse();
+  }
+};
+
+export const startGame = (board) => {
+  const discGenerator = getDiscs();
   while (true) {
     try {
       displayBoard(board);
-      const currentDisc = discs[i++ % 2];
+      const [currentDisc, opponentDisc] = discGenerator.next().value;
       const coordinates = getCoordinates(currentDisc);
       validateCoordinates(board, coordinates);
-      updateBoard(board, coordinates, currentDisc);
+      const cellsToFlip = scan(
+        board,
+        computeCellIndex(coordinates),
+        -8,
+        currentDisc,
+        opponentDisc,
+        (cur) => cur >= 0,
+      );
+      const cellNumber = computeCellIndex(coordinates);
+      updateBoard(board, cellNumber, currentDisc);
+      console.log("cellsToFlip:", cellsToFlip);
+      cellsToFlip.forEach((cell) => updateBoard(board, cell, currentDisc));
     } catch (error) {
       console.log(red(error.message));
     }

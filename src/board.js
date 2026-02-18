@@ -3,7 +3,7 @@ import { chunk } from "./utils.js";
 const generateBoard = () => Array.from({ length: 8 * 8 }, () => "⬜");
 
 const setDefaultDiscs = (board) => {
-  board[27] = "⚪";
+  board[27] = "⚪️";
   board[28] = "⚫️";
   board[35] = "⚫️";
   board[36] = "⚪️";

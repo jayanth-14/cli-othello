@@ -11,7 +11,6 @@ export const scan = (
 
   while (predicate(current)) {
     const currentCell = board[current];
-
     if (currentCell === opponentDisc) {
       cells.push(current);
       current += offset;

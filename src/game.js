@@ -48,7 +48,6 @@ const getCoordinates = (disc) => {
 export const computeCellIndex = ({ row, column }) => (row * 8) + column;
 
 const updateBoard = (board, cellNumber, disc) => {
-  console.log(disc);
   board[cellNumber] = disc;
 };
 
@@ -80,7 +79,6 @@ export const startGame = (board) => {
         opponentDisc,
       );
       updateBoard(board, cellNumber, currentDisc);
-      console.log("cellsToFlip:", cellsToFlip);
       cellsToFlip.forEach((cell) => updateBoard(board, cell, currentDisc));
     } catch (error) {
       console.log(red(error.message));

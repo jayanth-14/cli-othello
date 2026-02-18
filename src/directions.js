@@ -10,7 +10,6 @@ export const scan = (
 ) => {
   let current = index + offset;
   const cells = [];
-  console.log(index, offset);
   while (predicate(current)) {
     const currentCell = board[current];
     if (currentCell === opponentDisc) {
@@ -83,6 +82,5 @@ export const getCellsToFlip = (
       property.predicate,
     )
   );
-  console.log({ directionProperties, cells });
   return cells;
 };

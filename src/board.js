@@ -15,10 +15,13 @@ export const createBoard = () => {
   return board;
 };
 
+const generateRowString = (row, i) => `${i + 1}` + row.join("") + "\n";
+
 export const generateBoardStr = (board) => {
   const rows = chunk(board, 8);
+  const columnIndies = "\n  1 2 3 4 5 6 7 8 \n";
   return rows.reduce(
-    (string, row) => string + row.join("") + "\n",
-    "",
+    (string, row, i) => string + generateRowString(row, i),
+    columnIndies,
   );
 };
